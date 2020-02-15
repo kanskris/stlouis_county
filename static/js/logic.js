@@ -13,7 +13,7 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 }).addTo(myMap);
 
 // Load in geojson data
-var geoData = "static/data/Municipal_Boundaries.geojson";
+var geoData = "static/data/Voter_Precincts.geojson";
 
 var geojson;
 
@@ -24,10 +24,10 @@ d3.json(geoData, function(data) {
   geojson = L.choropleth(data, {
 
     // Define what  property in the features to use
-    valueProperty: "MHI2016",
+    valueProperty: "STATE_REP",
 
     // Set color scale
-    scale: ["#ffffb2", "#b10026"],
+    scale: ["#f073ee", "#0b0d73"],
 
     // Number of breaks in step range
     steps: 10,
@@ -43,8 +43,9 @@ d3.json(geoData, function(data) {
 
     // Binding a pop-up to each layer
     onEachFeature: function(feature, layer) {
-      layer.bindPopup("Zip Code: " + feature.properties.ZIP + "<br>Median Household Income:<br>" +
-        "$" + feature.properties.MHI2016);
+      layer.bindPopup("<strong>District:</strong> " + feature.properties.MUNI + "<br><strong>School:</strong>" + feature.properties.SCHOOL_DISTRICT +
+      "<br><strong># of State Reps:</strong>" + feature.properties.STATE_REP)
+      ;
     }
   }).addTo(myMap);
 
@@ -57,7 +58,7 @@ d3.json(geoData, function(data) {
     var labels = [];
 
     // Add min & max
-    var legendInfo = "<h1>Median Income</h1>" +
+    var legendInfo = "<h1>Number of State Reps</h1>" +
       "<div class=\"labels\">" +
         "<div class=\"min\">" + limits[0] + "</div>" +
         "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
